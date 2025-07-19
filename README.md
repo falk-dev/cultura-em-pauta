@@ -48,7 +48,7 @@ Reproduzir, de forma simplificada, o funcionamento de fóruns reais como o *Fór
 
 ## 🚀 Tecnologias
 
-- Linguagem: **Java** (ou Python, conforme o projeto)
+- Linguagem: **Java**
 - Paradigma: **Orientação a Objetos**
 - Estilo modular, com separação clara de camadas
 
