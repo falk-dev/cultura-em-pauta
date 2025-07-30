@@ -2,15 +2,21 @@ package repository;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import contracts.Votante;
 import model.Pessoa;
+import model.Proposta;
+import model.Sessao;
 import model.util.Cpf;
 
 public class BDSimulado {
   private static Map<String, Pessoa> pessoas = new HashMap<String, Pessoa>();
+  private static Map<String, Votante> votantes = new HashMap<String, Votante>();
+  private static Map<String, Proposta> propostas = new HashMap<String, Proposta>();
+  private static Map<String, Sessao> sessoes = new HashMap<String, Sessao>();
 
+  // Métodos de Pessoa
   public static boolean addPessoa(Pessoa p) {
-    if (!verificarPessoa(p)) {
+    if (pessoas.containsKey(p.getId())) {
       return false;
     }
 
@@ -18,22 +24,36 @@ public class BDSimulado {
     return true;
   }
 
-  public static boolean verificarPessoa(Pessoa p) {
-    if (pessoas.containsKey(p.getId())) {
-      return false;
-    }
-    return true;
-  }
-
-  public static void removePessoa(Cpf cpf) {
+  public static void removerPessoa(Cpf cpf) {
     pessoas.remove(cpf.toString());
-  }
-
-  public static Pessoa getPessoa(Cpf cpf) {
-    return pessoas.get(cpf.toString());
   }
 
   public static Map<String, Pessoa> getPessoas() {
     return pessoas;
   }
+
+  // Métodos de Proposta
+  public static void addProposta(Proposta p) {
+    propostas.put(p.getId(), p);
+  }
+
+  public static Map<String, Proposta> getPropostas() {
+    return propostas;
+  }
+
+  // Métodos de Sessão
+  public static void addSessao(Sessao s) {
+    sessoes.put(s.getId(), s);
+  }
+
+  // Métodos de Votante
+  public static boolean addVotante(Votante v) {
+    if (votantes.containsKey(v.getId())) {
+      return false;
+    }
+
+    votantes.put(v.getId(), v);
+    return true;
+  }
+
 }
