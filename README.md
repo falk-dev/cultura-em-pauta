@@ -15,34 +15,13 @@ Reproduzir, de forma simplificada, o funcionamento de fóruns reais como o *Fór
 
 ---
 
-## 🧱 Estrutura do Projeto
-```
-📁 application/ # Execução principal do sistema
-📁 model/ # Entidades principais (Pessoa, GrupoCultural, Sessao etc.)
-📁 service/ # Lógica de negócio (votação, apuração)
-📁 interface/ # Interface Votante
-📁 util/ # Classes auxiliares (simulação, geradores)
-```
-
----
-
 ## 🧠 Conceitos de POO Utilizados
 
 ✔️ **Abstração** – `Pessoa` é uma classe abstrata  
 ✔️ **Herança** – `Ouvinte` e `Conselheiro` herdam de `Pessoa`  
 ✔️ **Polimorfismo** – `Conselheiro` implementa a interface `Votante`  
 ✔️ **Encapsulamento** – Controle de acesso via getters/setters  
-✔️ **Enumeração** – Votos representados com `enum`: `APROVA`, `REJEITA`, `ABSTENCAO`
-
----
-
-## 🗳️ Fluxo da Simulação
-
-1. Cadastro de participantes e grupos culturais
-2. Grupos apresentam propostas e valores solicitados
-3. A sessão é iniciada
-4. Conselheiros registram presença e votam nas pautas
-5. O sistema exibe os resultados de cada pauta (quantidade de votos por tipo)
+✔️ **Enumeração** – Votos representados com `enum`: `SIM`, `NAO`, `ABSTENCAO`
 
 ---
 
