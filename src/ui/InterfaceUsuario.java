@@ -1,11 +1,13 @@
 package ui;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import model.Proposta;
 import model.Sessao;
 import model.Sessao.StatusSessao;
+import model.Voto.TipoVoto;
 import repository.BDSimulado;
 import service.ServicoProposta;
 import service.ServicoPessoa;
@@ -106,9 +108,11 @@ public class InterfaceUsuario {
           break;
 
         case 19:
+          listarVotosPorProposta();
           break;
 
         case 20:
+          exibirDadosVotacao();
           break;
 
         default:
@@ -326,7 +330,29 @@ public class InterfaceUsuario {
       System.out.print("Escolha o número da proposta: ");
       int indice = Integer.parseInt(teclado.nextLine());
 
-      String resposta = ServicoSessao.registrarVoto(idSessao, cpf, indice);
+      System.out.println("Tipo de voto: ");
+      System.out.println("[1] Sim");
+      System.out.println("[2] Não");
+      System.out.println("[3] Abstenção");
+      int tipoEscolhido = Integer.parseInt(teclado.nextLine());
+
+      TipoVoto tipoVoto;
+      switch (tipoEscolhido) {
+        case 1:
+          tipoVoto = TipoVoto.SIM;
+          break;
+        case 2:
+          tipoVoto = TipoVoto.NAO;
+          break;
+        case 3:
+          tipoVoto = TipoVoto.ABSTENCAO;
+          break;
+        default:
+          System.out.println("Opção inválida. Voto será considerado como Abstenção.");
+          tipoVoto = TipoVoto.ABSTENCAO;
+      }
+
+      String resposta = ServicoSessao.registrarVoto(idSessao, cpf, indice, tipoVoto);
       System.out.println(resposta);
     } else {
       System.out.println("Sessão não encontrada.");
@@ -334,8 +360,31 @@ public class InterfaceUsuario {
   }
 
   // Opção 19
+  private void listarVotosPorProposta() {
+    Map<String, Sessao> sessoes = BDSimulado.getSessoes();
+
+    if (sessoes.isEmpty()) {
+      System.out.println("Não há sessões cadastradas.");
+      return;
+    }
+
+    System.out.println("Sessões disponíveis:");
+    for (Sessao s : sessoes.values()) {
+      System.out.println("- ID: " + s.getId() + " | Descrição: " + s.getSessao());
+    }
+
+    System.out.print("Digite o ID da sessão que deseja consultar: ");
+    String idSessao = teclado.nextLine().trim();
+
+    String resultado = ServicoSessao.listarVotosPorProposta(idSessao);
+    System.out.println(resultado);
+  }
 
   // Opção 20
+  private void exibirDadosVotacao() {
+    System.out.println("🔍 Exibir resultado da votação");
+    listarVotosPorProposta(); // chama o método que interage com o usuário
+  }
 
   private void imprimirMenu() {
     StringBuilder menu = new StringBuilder();

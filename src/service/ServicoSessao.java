@@ -11,6 +11,8 @@ import model.Pessoa;
 import model.Proposta;
 import model.Sessao;
 import model.Sessao.StatusSessao;
+import model.Voto;
+import model.Voto.TipoVoto;
 import model.util.Cpf;
 import repository.BDSimulado;
 
@@ -244,7 +246,7 @@ public class ServicoSessao {
     return lista.toString();
   }
 
-  public static String registrarVoto(String idSessao, String cpf, int indiceProposta) {
+  public static String registrarVoto(String idSessao, String cpf, int indiceProposta, TipoVoto tipoVoto) {
     Sessao s = BDSimulado.getSessoes().get(idSessao);
     if (s == null) {
       return "Sessão não encontrada.";
@@ -255,14 +257,67 @@ public class ServicoSessao {
       return "Pessoa não tem direito a voto.";
     }
 
+    Votante votante = (Votante) p;
+
     List<Proposta> propostas = s.getPropostas();
     if (indiceProposta < 0 || indiceProposta >= propostas.size()) {
       return "Proposta inválida.";
     }
 
     Proposta propostaEscolhida = propostas.get(indiceProposta);
-    s.registrarVoto((Votante) p, propostaEscolhida);
+
+    s.registrarVoto(votante, propostaEscolhida, tipoVoto);
     return "Voto registrado com sucesso.";
+  }
+
+  public static String listarVotosPorProposta(String idSessao) {
+    Sessao sessao = BDSimulado.getSessoes().get(idSessao);
+
+    if (sessao == null) {
+      return "Sessão não encontrada.";
+    }
+
+    StringBuilder lista = new StringBuilder();
+    lista.append("\nSessão ID: ").append(sessao.getId()).append("\n");
+    lista.append("Descrição: ").append(sessao.getSessao()).append("\n");
+    lista.append("Data: ").append(sessao.getData()).append("\n");
+    lista.append("Status: ").append(sessao.getStatus()).append("\n\n");
+
+    List<Proposta> propostas = sessao.getPropostas();
+    List<Voto> votos = sessao.getVotos();
+
+    if (propostas.isEmpty()) {
+      return "Não há propostas nesta sessão.";
+    }
+
+    for (Proposta proposta : propostas) {
+      lista.append("\n📌 Proposta: ").append(proposta.getTitulo()).append("\n");
+
+      int votosSim = 0;
+      int votosNao = 0;
+      int votosAbstencao = 0;
+
+      for (Voto voto : votos) {
+        if (voto.getProposta().equals(proposta)) {
+          TipoVoto tipo = voto.getTipoVoto();
+          switch (tipo) {
+            case SIM -> votosSim++;
+            case NAO -> votosNao++;
+            case ABSTENCAO -> votosAbstencao++;
+          }
+        }
+      }
+
+      if (votosSim == 0 && votosNao == 0 && votosAbstencao == 0) {
+        lista.append("Nenhum voto registrado para essa proposta.\n");
+      } else {
+        lista.append("✔️ SIM: ").append(votosSim).append("\n");
+        lista.append("❌ NÃO: ").append(votosNao).append("\n");
+        lista.append("🤷 ABSTENÇÃO: ").append(votosAbstencao).append("\n");
+      }
+    }
+
+    return lista.toString();
   }
 
 }

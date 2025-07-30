@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import contracts.Votante;
+import model.Voto.TipoVoto;
 import model.util.Cpf;
 
 public class Sessao {
@@ -62,6 +63,10 @@ public class Sessao {
     return status;
   }
 
+  public List<Voto> getVotos() {
+    return votos;
+  }
+
   public void setStatus(StatusSessao status) {
     this.status = status;
   }
@@ -90,8 +95,8 @@ public class Sessao {
     this.propostas.add(p);
   }
 
-  public void registrarVoto(Votante votante, Proposta proposta) {
-    votos.add(new Voto(votante, proposta));
+  public void registrarVoto(Votante votante, Proposta proposta, TipoVoto tipoVoto) {
+    votos.add(new Voto(votante, proposta, tipoVoto));
   }
 
   @Override
