@@ -1,7 +1,5 @@
 package model.util;
 
-import java.util.Optional;
-
 import model.Sessao;
 import repository.BDSimulado;
 
@@ -34,38 +32,4 @@ public class DadosMockadosSessao {
         data);
     BDSimulado.addSessao(s);
   }
-
-  private static void adicionarParticipantesMock(String idSessao) {
-    Sessao sessao = null;
-
-    for (Sessao s : BDSimulado.getSessoes().values()) {
-      if (s.getId().equals(idSessao)) {
-        sessao = s;
-        break;
-      }
-    }
-
-    if (sessao == null) {
-      System.out.println("Sessão com código " + idSessao + " não encontrada.");
-      return;
-    }
-
-    Optional<Cpf> cpfCons1 = Cpf.getInstance("23097522077");
-    Optional<Cpf> cpfCons2 = Cpf.getInstance("42075653020");
-    Optional<Cpf> cpfOuv1 = Cpf.getInstance("46419746086");
-    Optional<Cpf> cpfOuv2 = Cpf.getInstance("97957874037");
-
-    Cpf cpfConselheiro1 = cpfCons1.get();
-    Cpf cpfConselheiro2 = cpfCons2.get();
-    Cpf cpfOuvinte1 = cpfOuv1.get();
-    Cpf cpfOuvinte2 = cpfOuv2.get();
-
-    sessao.adicionarConselheiro(cpfConselheiro1);
-    sessao.adicionarConselheiro(cpfConselheiro2);
-    sessao.adicionarOuvinte(cpfOuvinte1);
-    sessao.adicionarOuvinte(cpfOuvinte2);
-
-    System.out.println("Participantes adicionados à sessão " + sessao.getSessao());
-  }
-
 }

@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import contracts.Votante;
 import model.util.Cpf;
 
 public class Sessao {
@@ -12,6 +14,7 @@ public class Sessao {
   private List<Cpf> conselheirosPresentes;
   private List<Cpf> ouvintesPresentes;
   private List<Proposta> propostas;
+  private List<Voto> votos;
   private StatusSessao status;
 
   public Sessao(String sessao, String data) {
@@ -21,6 +24,7 @@ public class Sessao {
     this.conselheirosPresentes = new ArrayList<>();
     this.ouvintesPresentes = new ArrayList<>();
     this.propostas = new ArrayList<>();
+    this.votos = new ArrayList<>();
     this.status = StatusSessao.CRIADA;
   }
 
@@ -86,9 +90,12 @@ public class Sessao {
     this.propostas.add(p);
   }
 
+  public void registrarVoto(Votante votante, Proposta proposta) {
+    votos.add(new Voto(votante, proposta));
+  }
+
   @Override
   public String toString() {
     return "ID: " + id + " | " + sessao + " | Data: " + data + " | Status: " + status;
   }
-
 }

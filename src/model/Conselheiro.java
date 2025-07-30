@@ -18,4 +18,8 @@ public class Conselheiro extends Pessoa implements Votante {
     return propostas;
   }
 
+  @Override
+  public String getId() {
+    return super.getId();
+  }
 }

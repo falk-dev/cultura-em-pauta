@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import contracts.Votante;
 import model.Conselheiro;
 import model.Ouvinte;
 import model.Pessoa;
@@ -123,7 +124,7 @@ public class ServicoSessao {
 
     System.out.println("Propostas disponíveis:");
     for (int i = 0; i < listaPropostas.size(); i++) {
-      System.out.println(i + " - " + listaPropostas.get(i).getTitulo() + " | Segmento Cultural"
+      System.out.println(i + " - " + listaPropostas.get(i).getTitulo() + " | Segmento Cultural "
           + listaPropostas.get(i).getSegmentoCultural());
     }
 
@@ -198,7 +199,7 @@ public class ServicoSessao {
     }
 
     StringBuilder lista = new StringBuilder();
-    lista.append("Sessão ID: ").append(s.getId()).append("\n");
+    lista.append("\nSessão ID: ").append(s.getId()).append("\n");
     lista.append("Descrição: ").append(s.getSessao()).append("\n");
     lista.append("Data: ").append(s.getData()).append("\n");
     lista.append("Status: ").append(s.getStatus()).append("\n\n");
@@ -242,4 +243,26 @@ public class ServicoSessao {
 
     return lista.toString();
   }
+
+  public static String registrarVoto(String idSessao, String cpf, int indiceProposta) {
+    Sessao s = BDSimulado.getSessoes().get(idSessao);
+    if (s == null) {
+      return "Sessão não encontrada.";
+    }
+
+    Pessoa p = BDSimulado.getPessoas().get(cpf);
+    if (!(p instanceof Votante)) {
+      return "Pessoa não tem direito a voto.";
+    }
+
+    List<Proposta> propostas = s.getPropostas();
+    if (indiceProposta < 0 || indiceProposta >= propostas.size()) {
+      return "Proposta inválida.";
+    }
+
+    Proposta propostaEscolhida = propostas.get(indiceProposta);
+    s.registrarVoto((Votante) p, propostaEscolhida);
+    return "Voto registrado com sucesso.";
+  }
+
 }

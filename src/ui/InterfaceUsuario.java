@@ -1,8 +1,11 @@
 package ui;
 
+import java.util.List;
 import java.util.Scanner;
 
+import model.Proposta;
 import model.Sessao;
+import model.Sessao.StatusSessao;
 import repository.BDSimulado;
 import service.ServicoProposta;
 import service.ServicoPessoa;
@@ -99,6 +102,7 @@ public class InterfaceUsuario {
           break;
 
         case 18:
+          registrarVoto();
           break;
 
         case 19:
@@ -119,24 +123,34 @@ public class InterfaceUsuario {
   private void cadastrarPessoa(String tipo) {
     System.out.print("Nome do " + tipo + ": ");
     String nome = teclado.nextLine();
+
     System.out.print("CPF do " + tipo + ": ");
     String cpf = teclado.nextLine();
+
     System.out.print("Email do " + tipo + ": ");
     String email = teclado.nextLine();
+
     System.out.print("Telefone do " + tipo + ": ");
     String telefone = teclado.nextLine();
+
     System.out.print("PCD? [S/N]: ");
     String pcd = teclado.nextLine();
+
     System.out.print("Raça: ");
     String raca = teclado.nextLine();
+
     System.out.print("Renda: ");
     String renda = teclado.nextLine();
+
     System.out.print("Ocupação Profissional: ");
     String ocupacaoProfissional = teclado.nextLine();
+
     System.out.print("Atuação Cultural [Patrimônio ou Arte]: ");
     String atuacaoCultural = teclado.nextLine();
+
     System.out.print("Segmento Cultural [Ex.: Capoeira, Artes Cênicas, Dança etc.]: ");
     String segmentoCultural = teclado.nextLine();
+
     System.out.print("Grupo Cultural: ");
     String grupoCultural = teclado.nextLine();
 
@@ -175,14 +189,19 @@ public class InterfaceUsuario {
 
   // Opção 8
   private void criarNovaProposta() {
+    System.out.print("ID da sessão para adicionar a proposta: ");
+    String idSessao = teclado.nextLine();
+
     System.out.print("Título da proposta: ");
     String titulo = teclado.nextLine();
+
     System.out.print("Descrição da proposta: ");
     String descricao = teclado.nextLine();
+
     System.out.print("Segmento Cultural: ");
     String segmentoCultural = teclado.nextLine();
 
-    System.out.println(servicoProposta.cadastrarProposta(titulo, descricao, segmentoCultural));
+    System.out.println(servicoProposta.cadastrarProposta(idSessao, titulo, descricao, segmentoCultural));
   }
 
   // Opção 9
@@ -275,6 +294,44 @@ public class InterfaceUsuario {
   }
 
   // Opção 18
+  public void registrarVoto() {
+    System.out.println("Sessões Ativas:");
+
+    for (Sessao sessao : BDSimulado.getSessoes().values()) {
+      if (sessao.getStatus() == StatusSessao.ATIVA) {
+        System.out.println("ID: " + sessao.getId() + " - " + sessao.getSessao() + " (Data: " + sessao.getData() + ")");
+      }
+    }
+
+    System.out.print("Digite o ID da sessão: ");
+    String idSessao = teclado.nextLine();
+
+    System.out.print("Digite seu CPF: ");
+    String cpf = teclado.nextLine();
+
+    Sessao s = BDSimulado.getSessoes().get(idSessao);
+    if (s != null) {
+      List<Proposta> propostas = s.getPropostas();
+
+      if (propostas.isEmpty()) {
+        System.out.println("Não há propostas nessa sessão.");
+        return;
+      }
+
+      System.out.println("Propostas disponíveis:");
+      for (int i = 0; i < propostas.size(); i++) {
+        System.out.println("[" + i + "] " + propostas.get(i).getTitulo());
+      }
+
+      System.out.print("Escolha o número da proposta: ");
+      int indice = Integer.parseInt(teclado.nextLine());
+
+      String resposta = ServicoSessao.registrarVoto(idSessao, cpf, indice);
+      System.out.println(resposta);
+    } else {
+      System.out.println("Sessão não encontrada.");
+    }
+  }
 
   // Opção 19
 

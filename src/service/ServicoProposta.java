@@ -6,7 +6,7 @@ import repository.BDSimulado;
 public class ServicoProposta {
   private Proposta p;
 
-  public String cadastrarProposta(String titulo, String descricao, String segmentoCultural) {
+  public String cadastrarProposta(String idSessao, String titulo, String descricao, String segmentoCultural) {
     if (titulo.isBlank() || descricao.isBlank() || segmentoCultural.isBlank()) {
       return "Erro: todos os campos devem ser preenchidos.";
     }
