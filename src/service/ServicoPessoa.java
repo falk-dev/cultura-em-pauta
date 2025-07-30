@@ -22,7 +22,7 @@ public class ServicoPessoa {
     Optional<Email> optEmail = Email.getInstance(email);
 
     if (optCpf.isEmpty() || optEmail.isEmpty()) {
-      return "Erro: CPF ou e-mail inválido.";
+      return "\n\u274C Erro: CPF ou e-mail inválido.";
     }
 
     Cpf cpfInstance = optCpf.get();
@@ -43,7 +43,7 @@ public class ServicoPessoa {
       BDSimulado.addVotante((Votante) p);
     }
 
-    return tipo + " cadastrado com sucesso!";
+    return "\n\u2705 " + tipo + " cadastrado com sucesso!";
   }
 
   public String listarPessoas() {
@@ -90,13 +90,13 @@ public class ServicoPessoa {
     Optional<Cpf> optCpf = Cpf.getInstance(cpf);
 
     if (optCpf.isEmpty()) {
-      return "CPF inválido.";
+      return "\n\u274C CPF inválido.";
     }
 
     Pessoa p = BDSimulado.getPessoas().get(optCpf.get().toString());
 
     if (p == null) {
-      return "Pessoa com CPF " + cpf + " não encontrada.";
+      return "\n\u274C Pessoa com CPF " + cpf + " não encontrada.";
     }
 
     return p.toString();
@@ -106,15 +106,15 @@ public class ServicoPessoa {
     Optional<Cpf> optCpf = Cpf.getInstance(cpf);
 
     if (optCpf.isEmpty()) {
-      return "CPF inválido.";
+      return "\n\u274C CPF inválido.";
     }
 
     Pessoa p = BDSimulado.getPessoas().remove(optCpf.get().toString());
 
     if (p == null) {
-      return "Pessoa com CPF " + cpf + " não encontrada.";
+      return "\n\u274C Pessoa com CPF " + cpf + " não encontrada.";
     }
 
-    return "Pessoa '" + p.getNome() + "' removida com sucesso.";
+    return "\n\u2705 Pessoa '" + p.getNome() + "' removida com sucesso.";
   }
 }

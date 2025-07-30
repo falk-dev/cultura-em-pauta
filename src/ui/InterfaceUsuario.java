@@ -33,6 +33,7 @@ public class InterfaceUsuario {
     do {
       imprimirMenu();
       opcao = Byte.parseByte(teclado.nextLine());
+      System.out.println();
 
       switch (opcao) {
         case 1:
@@ -118,7 +119,10 @@ public class InterfaceUsuario {
         default:
           break;
       }
-
+      // Chamando a limpeza de console
+      System.out.println("\nPressione Enter para limpar o console...");
+      teclado.nextLine();
+      clearConsole();
     } while (opcao != 0);
     teclado.close();
   }
@@ -181,6 +185,7 @@ public class InterfaceUsuario {
   private void buscarPessoa() {
     System.out.print("Digite o CPF da pessoa: ");
     String cpf = teclado.nextLine();
+
     System.out.println(servicoPessoa.buscarPessoaPorCpf(cpf));
   }
 
@@ -188,12 +193,20 @@ public class InterfaceUsuario {
   private void removerPessoa() {
     System.out.print("Digite o CPF da pessoa: ");
     String cpf = teclado.nextLine();
+
     System.out.println(servicoPessoa.removerPessoaPorCpf(cpf));
   }
 
   // Opção 8
   private void criarNovaProposta() {
-    System.out.print("ID da sessão para adicionar a proposta: ");
+    System.out.println("Sessões disponíveis:");
+
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      if (s.getStatus() != StatusSessao.ENCERRADA) {
+        System.out.println(s);
+      }
+    }
+    System.out.print("\nID da sessão para adicionar a proposta: ");
     String idSessao = teclado.nextLine();
 
     System.out.print("Título da proposta: ");
@@ -217,6 +230,7 @@ public class InterfaceUsuario {
   private void criarNovaSessao() {
     System.out.print("Título da sessão: ");
     String titulo = teclado.nextLine();
+
     System.out.print("Data da sessão (DD/MM/AAAA): ");
     String data = teclado.nextLine();
 
@@ -226,20 +240,27 @@ public class InterfaceUsuario {
   // Opção 11
   private void adicionarConselheiroASessao() {
     System.out.println("\nSessões disponíveis:");
+
     for (Sessao s : BDSimulado.getSessoes().values()) {
-      System.out.println(s);
+      if (s.getStatus() != StatusSessao.ENCERRADA) {
+        System.out.println(s);
+      }
     }
 
     System.out.print("\nDigite o ID da sessão à qual deseja adicionar conselheiros: ");
     String idSessao = teclado.nextLine();
+
     System.out.println(servicoSessao.adicionarConselheirosASessao(idSessao, teclado));
   }
 
   // Opção 12
   private void adicionarOuvinteASessao() {
     System.out.println("\nSessões disponíveis:");
+
     for (Sessao s : BDSimulado.getSessoes().values()) {
-      System.out.println(s);
+      if (s.getStatus() != StatusSessao.ENCERRADA) {
+        System.out.println(s);
+      }
     }
 
     System.out.print("\nDigite o ID da sessão para adicionar ouvintes: ");
@@ -251,8 +272,11 @@ public class InterfaceUsuario {
   // Opção 13
   private void adicionarPropostasASessao() {
     System.out.println("\nSessões disponíveis:");
+
     for (Sessao s : BDSimulado.getSessoes().values()) {
-      System.out.println(s);
+      if (s.getStatus() != StatusSessao.ENCERRADA) {
+        System.out.println(s);
+      }
     }
 
     System.out.print("\nDigite o ID da sessão para adicionar propostas: ");
@@ -264,24 +288,40 @@ public class InterfaceUsuario {
   // Opção 14
   private void iniciarSessao() {
     System.out.println("\nSessões disponíveis:");
+
     for (Sessao s : BDSimulado.getSessoes().values()) {
-      System.out.println(s);
+      if (s.getStatus() == StatusSessao.CRIADA) {
+        System.out.println(s);
+      }
     }
 
-    System.out.print("Digite o ID da sessão que deseja iniciar: ");
+    System.out.print("\nDigite o ID da sessão que deseja iniciar: ");
     String idSessao = teclado.nextLine();
+
     System.out.println(servicoSessao.iniciarSessao(idSessao));
   }
 
   // Opção 15
   private void encerrarSessao() {
     System.out.println("\nSessões disponíveis:");
+
+    boolean encontrouSessaoAtiva = false;
+
     for (Sessao s : BDSimulado.getSessoes().values()) {
-      System.out.println(s);
+      if (s.getStatus() == StatusSessao.ATIVA) {
+        System.out.println(s);
+        encontrouSessaoAtiva = true;
+      }
     }
 
-    System.out.print("Digite o ID da sessão que deseja encerrar: ");
+    if (!encontrouSessaoAtiva) {
+      System.out.println("\n\u274C Nenhuma sessão ativa disponível no momento.");
+      return;
+    }
+
+    System.out.print("\nDigite o ID da sessão que deseja encerrar: ");
     String idSessao = teclado.nextLine();
+
     System.out.println(servicoSessao.encerrarSessao(idSessao));
   }
 
@@ -292,8 +332,13 @@ public class InterfaceUsuario {
 
   // Opção 17
   public void consultarStatusSessao() {
-    System.out.print("Digite o ID da sessão para consultar status: ");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("\nDigite o ID da sessão para consultar status: ");
     String idSessao = teclado.nextLine();
+
     System.out.println(servicoSessao.consultarStatusSessao(idSessao));
   }
 
@@ -301,19 +346,28 @@ public class InterfaceUsuario {
   public void registrarVoto() {
     System.out.println("Sessões Ativas:");
 
-    for (Sessao sessao : BDSimulado.getSessoes().values()) {
-      if (sessao.getStatus() == StatusSessao.ATIVA) {
-        System.out.println("ID: " + sessao.getId() + " - " + sessao.getSessao() + " (Data: " + sessao.getData() + ")");
+    boolean encontrouSessaoAtiva = false;
+
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      if (s.getStatus() == StatusSessao.ATIVA) {
+        System.out.println(s);
+        encontrouSessaoAtiva = true;
       }
     }
 
-    System.out.print("Digite o ID da sessão: ");
+    if (!encontrouSessaoAtiva) {
+      System.out.println("\n\u274C Nenhuma sessão ativa disponível no momento.");
+      return;
+    }
+
+    System.out.print("\nDigite o ID da sessão: ");
     String idSessao = teclado.nextLine();
 
-    System.out.print("Digite seu CPF: ");
+    System.out.print("\nDigite seu CPF: ");
     String cpf = teclado.nextLine();
 
     Sessao s = BDSimulado.getSessoes().get(idSessao);
+
     if (s != null) {
       List<Proposta> propostas = s.getPropostas();
 
@@ -322,15 +376,15 @@ public class InterfaceUsuario {
         return;
       }
 
-      System.out.println("Propostas disponíveis:");
+      System.out.println("\nPropostas disponíveis:");
       for (int i = 0; i < propostas.size(); i++) {
         System.out.println("[" + i + "] " + propostas.get(i).getTitulo());
       }
 
-      System.out.print("Escolha o número da proposta: ");
+      System.out.print("\nEscolha o número da proposta: ");
       int indice = Integer.parseInt(teclado.nextLine());
 
-      System.out.println("Tipo de voto: ");
+      System.out.println("\nTipo de voto: ");
       System.out.println("[1] Sim");
       System.out.println("[2] Não");
       System.out.println("[3] Abstenção");
@@ -348,14 +402,14 @@ public class InterfaceUsuario {
           tipoVoto = TipoVoto.ABSTENCAO;
           break;
         default:
-          System.out.println("Opção inválida. Voto será considerado como Abstenção.");
+          System.out.println("\nOpção inválida. Voto será considerado como Abstenção.");
           tipoVoto = TipoVoto.ABSTENCAO;
       }
 
       String resposta = ServicoSessao.registrarVoto(idSessao, cpf, indice, tipoVoto);
       System.out.println(resposta);
     } else {
-      System.out.println("Sessão não encontrada.");
+      System.out.println("\n\u274C Sessão não encontrada.");
     }
   }
 
@@ -364,7 +418,7 @@ public class InterfaceUsuario {
     Map<String, Sessao> sessoes = BDSimulado.getSessoes();
 
     if (sessoes.isEmpty()) {
-      System.out.println("Não há sessões cadastradas.");
+      System.out.println("\n\u274C Não há sessões cadastradas.");
       return;
     }
 
@@ -373,7 +427,7 @@ public class InterfaceUsuario {
       System.out.println("- ID: " + s.getId() + " | Descrição: " + s.getSessao());
     }
 
-    System.out.print("Digite o ID da sessão que deseja consultar: ");
+    System.out.print("\nDigite o ID da sessão que deseja consultar: ");
     String idSessao = teclado.nextLine().trim();
 
     String resultado = ServicoSessao.listarVotosPorProposta(idSessao);
@@ -382,8 +436,19 @@ public class InterfaceUsuario {
 
   // Opção 20
   private void exibirDadosVotacao() {
-    System.out.println("🔍 Exibir resultado da votação");
-    listarVotosPorProposta(); // chama o método que interage com o usuário
+    listarVotosPorProposta();
+  }
+
+  public static void clearConsole() {
+    try {
+      if (System.getProperty("os.name").contains("Windows")) {
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+      } else {
+        new ProcessBuilder("clear").inheritIO().start().waitFor();
+      }
+    } catch (Exception e) {
+      System.out.println("Erro ao limpar o console.");
+    }
   }
 
   private void imprimirMenu() {

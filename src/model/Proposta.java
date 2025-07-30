@@ -33,6 +33,6 @@ public class Proposta {
         "Título: " + titulo + "\n" +
         "Descrição: " + descricao + "\n" +
         "Segmento Cultural: " + segmentoCultural + "\n" +
-        "---------------------------\n";
+        "============================\n";
   }
 }

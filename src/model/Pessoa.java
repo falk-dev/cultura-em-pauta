@@ -45,7 +45,7 @@ public abstract class Pessoa {
 
   @Override
   public String toString() {
-    return "Nome: " + nome + "\n" +
+    return "\nNome: " + nome + "\n" +
         "CPF: " + cpf + "\n" +
         "Email: " + email + "\n" +
         "Telefone: " + telefone + "\n" +
@@ -53,7 +53,6 @@ public abstract class Pessoa {
         "Raça: " + raca + "\n" +
         "Renda: R$ " + renda + "\n" +
         "Ocupação Profissional: " + ocupacaoProfissional + "\n" +
-        carreiraCultural + "\n" +
-        "===============================================";
+        carreiraCultural;
   }
 }
