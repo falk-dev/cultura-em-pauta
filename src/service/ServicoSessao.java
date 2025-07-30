@@ -207,7 +207,7 @@ public class ServicoSessao {
 
     lista.append("Conselheiros presentes:\n");
     if (s.getConselheirosPresentes().isEmpty()) {
-      lista.append("  \n\u274C Nenhum conselheiro presente.\n");
+      lista.append("  \u274C Nenhum conselheiro presente.\n");
     } else {
       for (Cpf c : s.getConselheirosPresentes()) {
         Pessoa p = BDSimulado.getPessoas().get(c.toString());
@@ -221,7 +221,7 @@ public class ServicoSessao {
 
     lista.append("\nOuvintes presentes:\n");
     if (s.getOuvintesPresentes().isEmpty()) {
-      lista.append("  \n\u274C Nenhum ouvinte presente.\n");
+      lista.append("  \u274C Nenhum ouvinte presente.\n");
     } else {
       for (Cpf c : s.getOuvintesPresentes()) {
         Pessoa p = BDSimulado.getPessoas().get(c.toString());
@@ -235,7 +235,7 @@ public class ServicoSessao {
 
     lista.append("\nPropostas na sessão:\n");
     if (s.getPropostas().isEmpty()) {
-      lista.append("  \n\u274C Nenhuma proposta adicionada.\n");
+      lista.append("  \u274C Nenhuma proposta adicionada.\n");
     } else {
       for (Proposta p : s.getPropostas()) {
         lista.append("  - ").append(p.getTitulo()).append("\n");
@@ -265,25 +265,24 @@ public class ServicoSessao {
 
     Proposta propostaEscolhida = propostas.get(indiceProposta);
 
-    s.registrarVoto(votante, propostaEscolhida, tipoVoto);
-    return "\n\u2705 Voto registrado com sucesso.";
+    return s.registrarVoto(votante, propostaEscolhida, tipoVoto);
   }
 
   public static String listarVotosPorProposta(String idSessao) {
-    Sessao sessao = BDSimulado.getSessoes().get(idSessao);
+    Sessao s = BDSimulado.getSessoes().get(idSessao);
 
-    if (sessao == null) {
+    if (s == null) {
       return "\n\u274C Sessão não encontrada.";
     }
 
     StringBuilder lista = new StringBuilder();
-    lista.append("\nSessão ID: ").append(sessao.getId()).append("\n");
-    lista.append("Descrição: ").append(sessao.getSessao()).append("\n");
-    lista.append("Data: ").append(sessao.getData()).append("\n");
-    lista.append("Status: ").append(sessao.getStatus()).append("\n\n");
+    lista.append("\nSessão ID: ").append(s.getId()).append("\n");
+    lista.append("Descrição: ").append(s.getSessao()).append("\n");
+    lista.append("Data: ").append(s.getData()).append("\n");
+    lista.append("Status: ").append(s.getStatus()).append("\n\n");
 
-    List<Proposta> propostas = sessao.getPropostas();
-    List<Voto> votos = sessao.getVotos();
+    List<Proposta> propostas = s.getPropostas();
+    List<Voto> votos = s.getVotos();
 
     if (propostas.isEmpty()) {
       return "\n\u274C Não há propostas nesta sessão.";

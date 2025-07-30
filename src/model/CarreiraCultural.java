@@ -11,28 +11,8 @@ public class CarreiraCultural {
     this.grupoCultural = grupoCultural;
   }
 
-  public String getAtuacaoCultural() {
-    return atuacaoCultural;
-  }
-
   public String getSegmentoCultural() {
     return segmentoCultural;
-  }
-
-  public String getColetivoCultural() {
-    return grupoCultural;
-  }
-
-  public void setAtuacaoCultural(String atuacaoCultural) {
-    this.atuacaoCultural = atuacaoCultural;
-  }
-
-  public void setSegmentoCultural(String segmentoCultural) {
-    this.segmentoCultural = segmentoCultural;
-  }
-
-  public void setColetivoCultural(String coletivoCultural) {
-    this.grupoCultural = coletivoCultural;
   }
 
   public String toString() {

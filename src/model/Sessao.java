@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import contracts.Votante;
 import model.Voto.TipoVoto;
@@ -15,7 +17,7 @@ public class Sessao {
   private List<Cpf> conselheirosPresentes;
   private List<Cpf> ouvintesPresentes;
   private List<Proposta> propostas;
-  private List<Voto> votos;
+  private Map<String, Voto> votos;
   private StatusSessao status;
 
   public Sessao(String sessao, String data) {
@@ -25,7 +27,7 @@ public class Sessao {
     this.conselheirosPresentes = new ArrayList<>();
     this.ouvintesPresentes = new ArrayList<>();
     this.propostas = new ArrayList<>();
-    this.votos = new ArrayList<>();
+    this.votos = new HashMap<>();
     this.status = StatusSessao.CRIADA;
   }
 
@@ -64,11 +66,7 @@ public class Sessao {
   }
 
   public List<Voto> getVotos() {
-    return votos;
-  }
-
-  public void setStatus(StatusSessao status) {
-    this.status = status;
+    return new ArrayList<>(votos.values());
   }
 
   public void iniciar() {
@@ -95,8 +93,16 @@ public class Sessao {
     this.propostas.add(p);
   }
 
-  public void registrarVoto(Votante votante, Proposta proposta, TipoVoto tipoVoto) {
-    votos.add(new Voto(votante, proposta, tipoVoto));
+  public String registrarVoto(Votante votante, Proposta proposta, TipoVoto tipoVoto) {
+    String id = votante.getId();
+
+    if (votos.containsKey(id)) {
+      return "\n\u274C Esse votante já registrou um voto nesta sessão.";
+    }
+
+    Voto voto = new Voto(votante, proposta, tipoVoto);
+    votos.put(id, voto);
+    return "\n\u2705 Voto registrado com sucesso.";
   }
 
   @Override
