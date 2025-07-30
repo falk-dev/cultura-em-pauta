@@ -7,9 +7,9 @@ import ui.InterfaceUsuario;
 public class Main {
     public static void main(String[] args) throws Exception {
         ServicoPessoa servicoPessoa = new ServicoPessoa();
-        ServicoProposta servicoPauta = new ServicoProposta();
+        ServicoProposta servicoProposta = new ServicoProposta();
 
-        InterfaceUsuario iu = new InterfaceUsuario(servicoPessoa, servicoPauta);
+        InterfaceUsuario iu = new InterfaceUsuario(servicoPessoa, servicoProposta);
         iu.exibir();
     }
 }

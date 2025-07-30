@@ -1,18 +1,20 @@
 package ui;
 
 import java.util.Scanner;
+
 import service.ServicoProposta;
 import service.ServicoPessoa;
 
 public class InterfaceUsuario {
   // Inicialização de atributos da classe InterfaceUsuario
   private ServicoPessoa servicoPessoa;
-  private ServicoProposta servicoPropostas;
+  private ServicoProposta servicoProposta;
   private Scanner teclado;
 
   // Construtor
-  public InterfaceUsuario(ServicoPessoa servicoPessoa, ServicoProposta servicoPauta) {
+  public InterfaceUsuario(ServicoPessoa servicoPessoa, ServicoProposta servicoProposta) {
     this.servicoPessoa = servicoPessoa;
+    this.servicoProposta = servicoProposta;
     this.teclado = new Scanner(System.in);
   }
 
@@ -52,10 +54,11 @@ public class InterfaceUsuario {
           break;
 
         case 8:
-          novaProposta();
+          criarNovaProposta();
           break;
 
         case 9:
+          listarPropostas();
           break;
 
         case 10:
@@ -143,7 +146,7 @@ public class InterfaceUsuario {
   }
 
   // Opção 8
-  private void novaProposta() {
+  private void criarNovaProposta() {
     System.out.print("Título da proposta: ");
     String titulo = teclado.nextLine();
     System.out.print("Descrição da proposta: ");
@@ -151,10 +154,13 @@ public class InterfaceUsuario {
     System.out.print("Segmento Cultural: ");
     String segmentoCultural = teclado.nextLine();
 
-    System.out.println(servicoPropostas.cadastrarProposta(titulo, descricao, segmentoCultural));
+    System.out.println(servicoProposta.cadastrarProposta(titulo, descricao, segmentoCultural));
   }
 
   // Opção 9
+  public void listarPropostas() {
+    System.out.println(servicoProposta.listarPropostas());
+  }
 
   // Opção 10
 
@@ -188,7 +194,7 @@ public class InterfaceUsuario {
     menu.append("[8] Criar nova proposta\n");
     menu.append("[9] Listar todas as propostas\n");
 
-    menu.append("\n\uD83D\uDDD3️ Módulo de Sessões\n");
+    menu.append("\n\uD83D\uDCC5 Módulo de Sessões\n");
     menu.append("[10] Criar nova sessão de votação\n");
     menu.append("[11] Iniciar sessão\n");
     menu.append("[12] Encerrar sessão\n");
