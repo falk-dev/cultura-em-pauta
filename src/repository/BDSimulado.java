@@ -1,6 +1,6 @@
 package repository;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import contracts.Votante;
 import model.Pessoa;
@@ -9,10 +9,10 @@ import model.Sessao;
 import model.util.Cpf;
 
 public class BDSimulado {
-  private static Map<String, Pessoa> pessoas = new HashMap<String, Pessoa>();
-  private static Map<String, Votante> votantes = new HashMap<String, Votante>();
-  private static Map<String, Proposta> propostas = new HashMap<String, Proposta>();
-  private static Map<String, Sessao> sessoes = new HashMap<String, Sessao>();
+  private static Map<String, Pessoa> pessoas = new LinkedHashMap<String, Pessoa>();
+  private static Map<String, Votante> votantes = new LinkedHashMap<String, Votante>();
+  private static Map<String, Proposta> propostas = new LinkedHashMap<String, Proposta>();
+  private static Map<String, Sessao> sessoes = new LinkedHashMap<String, Sessao>();
 
   // Métodos de Pessoa
   public static boolean addPessoa(Pessoa p) {
@@ -44,6 +44,10 @@ public class BDSimulado {
   // Métodos de Sessão
   public static void addSessao(Sessao s) {
     sessoes.put(s.getId(), s);
+  }
+
+  public static Map<String, Sessao> getSessoes() {
+    return sessoes;
   }
 
   // Métodos de Votante

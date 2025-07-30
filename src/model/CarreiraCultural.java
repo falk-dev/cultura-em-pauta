@@ -3,12 +3,12 @@ package model;
 public class CarreiraCultural {
   private String atuacaoCultural;
   private String segmentoCultural;
-  private String coletivoCultural;
+  private String grupoCultural;
 
-  public CarreiraCultural(String atuacaoCultural, String segmentoCultural, String coletivoCultural) {
+  public CarreiraCultural(String atuacaoCultural, String segmentoCultural, String grupoCultural) {
     this.atuacaoCultural = atuacaoCultural;
     this.segmentoCultural = segmentoCultural;
-    this.coletivoCultural = coletivoCultural;
+    this.grupoCultural = grupoCultural;
   }
 
   public String getAtuacaoCultural() {
@@ -20,7 +20,7 @@ public class CarreiraCultural {
   }
 
   public String getColetivoCultural() {
-    return coletivoCultural;
+    return grupoCultural;
   }
 
   public void setAtuacaoCultural(String atuacaoCultural) {
@@ -32,13 +32,12 @@ public class CarreiraCultural {
   }
 
   public void setColetivoCultural(String coletivoCultural) {
-    this.coletivoCultural = coletivoCultural;
+    this.grupoCultural = coletivoCultural;
   }
 
   public String toString() {
-    return "CarreiraCultural{" +
-        "atuacaoCultural='" + atuacaoCultural + '\'' +
-        "segmentoCultural='" + segmentoCultural + '\'' +
-        "coletivoCultural='" + coletivoCultural + '\'';
+    return "Atuação Cultural: " + atuacaoCultural + "\n" +
+        "Segmento Cultural: " + segmentoCultural + "\n" +
+        "Grupo Cultural: " + grupoCultural + "\n";
   }
 }

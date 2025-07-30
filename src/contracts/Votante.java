@@ -1,5 +1,5 @@
 package contracts;
 
-public class Votante {
-
+public interface Votante {
+  String getId();
 }

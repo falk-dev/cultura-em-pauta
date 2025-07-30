@@ -2,19 +2,24 @@ package ui;
 
 import java.util.Scanner;
 
+import model.Sessao;
+import repository.BDSimulado;
 import service.ServicoProposta;
 import service.ServicoPessoa;
+import service.ServicoSessao;
 
 public class InterfaceUsuario {
   // Inicialização de atributos da classe InterfaceUsuario
   private ServicoPessoa servicoPessoa;
   private ServicoProposta servicoProposta;
+  private ServicoSessao servicoSessao;
   private Scanner teclado;
 
   // Construtor
-  public InterfaceUsuario(ServicoPessoa servicoPessoa, ServicoProposta servicoProposta) {
+  public InterfaceUsuario(ServicoPessoa servicoPessoa, ServicoProposta servicoProposta, ServicoSessao servicoSessao) {
     this.servicoPessoa = servicoPessoa;
     this.servicoProposta = servicoProposta;
+    this.servicoSessao = servicoSessao;
     this.teclado = new Scanner(System.in);
   }
 
@@ -62,21 +67,44 @@ public class InterfaceUsuario {
           break;
 
         case 10:
+          criarNovaSessao();
           break;
 
         case 11:
+          adicionarConselheiroASessao();
           break;
 
         case 12:
+          adicionarOuvinteASessao();
           break;
 
         case 13:
+          adicionarPropostasASessao();
           break;
 
         case 14:
+          iniciarSessao();
           break;
 
         case 15:
+          encerrarSessao();
+          break;
+
+        case 16:
+          listarSessoes();
+          break;
+
+        case 17:
+          consultarStatusSessao();
+          break;
+
+        case 18:
+          break;
+
+        case 19:
+          break;
+
+        case 20:
           break;
 
         default:
@@ -109,11 +137,11 @@ public class InterfaceUsuario {
     String atuacaoCultural = teclado.nextLine();
     System.out.print("Segmento Cultural [Ex.: Capoeira, Artes Cênicas, Dança etc.]: ");
     String segmentoCultural = teclado.nextLine();
-    System.out.print("Coletivo Cultural [Ex.: Patrimônio, Capoeira, Grupo Candeias]: ");
-    String coletivoCultural = teclado.nextLine();
+    System.out.print("Grupo Cultural: ");
+    String grupoCultural = teclado.nextLine();
 
     System.out.println(servicoPessoa.cadastrarPessoa(nome, cpf, email, telefone, pcd, raca, renda,
-        ocupacaoProfissional, atuacaoCultural, segmentoCultural, coletivoCultural, tipo));
+        ocupacaoProfissional, atuacaoCultural, segmentoCultural, grupoCultural, tipo));
   }
 
   // Opção 3
@@ -163,20 +191,94 @@ public class InterfaceUsuario {
   }
 
   // Opção 10
+  private void criarNovaSessao() {
+    System.out.print("Título da sessão: ");
+    String titulo = teclado.nextLine();
+    System.out.print("Data da sessão (DD/MM/AAAA): ");
+    String data = teclado.nextLine();
+
+    System.out.println(servicoSessao.cadastrarSessao(titulo, data));
+  }
 
   // Opção 11
+  private void adicionarConselheiroASessao() {
+    System.out.println("\nSessões disponíveis:");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("\nDigite o ID da sessão à qual deseja adicionar conselheiros: ");
+    String idSessao = teclado.nextLine();
+    System.out.println(servicoSessao.adicionarConselheirosASessao(idSessao, teclado));
+  }
 
   // Opção 12
+  private void adicionarOuvinteASessao() {
+    System.out.println("\nSessões disponíveis:");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("\nDigite o ID da sessão para adicionar ouvintes: ");
+    String idSessao = teclado.nextLine();
+
+    System.out.println(servicoSessao.adicionarOuvintesASessao(idSessao, teclado));
+  }
 
   // Opção 13
+  private void adicionarPropostasASessao() {
+    System.out.println("\nSessões disponíveis:");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("\nDigite o ID da sessão para adicionar propostas: ");
+    String idSessao = teclado.nextLine();
+
+    System.out.println(servicoSessao.adicionarPropostasASessao(idSessao, teclado));
+  }
 
   // Opção 14
+  private void iniciarSessao() {
+    System.out.println("\nSessões disponíveis:");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("Digite o ID da sessão que deseja iniciar: ");
+    String idSessao = teclado.nextLine();
+    System.out.println(servicoSessao.iniciarSessao(idSessao));
+  }
 
   // Opção 15
+  private void encerrarSessao() {
+    System.out.println("\nSessões disponíveis:");
+    for (Sessao s : BDSimulado.getSessoes().values()) {
+      System.out.println(s);
+    }
+
+    System.out.print("Digite o ID da sessão que deseja encerrar: ");
+    String idSessao = teclado.nextLine();
+    System.out.println(servicoSessao.encerrarSessao(idSessao));
+  }
 
   // Opção 16
+  public void listarSessoes() {
+    System.out.println(servicoSessao.listarSessoes());
+  }
 
   // Opção 17
+  public void consultarStatusSessao() {
+    System.out.print("Digite o ID da sessão para consultar status: ");
+    String idSessao = teclado.nextLine();
+    System.out.println(servicoSessao.consultarStatusSessao(idSessao));
+  }
+
+  // Opção 18
+
+  // Opção 19
+
+  // Opção 20
 
   private void imprimirMenu() {
     StringBuilder menu = new StringBuilder();
@@ -196,15 +298,18 @@ public class InterfaceUsuario {
 
     menu.append("\n\uD83D\uDCC5 Módulo de Sessões\n");
     menu.append("[10] Criar nova sessão de votação\n");
-    menu.append("[11] Iniciar sessão\n");
-    menu.append("[12] Encerrar sessão\n");
-    menu.append("[13] Listar sessões existentes\n");
-    menu.append("[14] Consultar status de uma sessão\n");
+    menu.append("[11] Adicionar conselheiros à sessão\n");
+    menu.append("[12] Adicionar ouvintes à sessão\n");
+    menu.append("[13] Adicionar propostas à sessão\n");
+    menu.append("[14] Iniciar sessão\n");
+    menu.append("[15] Encerrar sessão\n");
+    menu.append("[16] Listar sessões existentes\n");
+    menu.append("[17] Consultar status de uma sessão\n");
 
     menu.append("\n\uD83D\uDDF3️ Módulo de Votação\n");
-    menu.append("[15] Registrar voto\n");
-    menu.append("[16] Listar votos por proposta\n");
-    menu.append("[17] Exibir resultado da votação\n");
+    menu.append("[18] Registrar voto\n");
+    menu.append("[19] Listar votos por proposta\n");
+    menu.append("[20] Exibir resultado da votação\n");
 
     menu.append("\nEscolha uma opção:");
 

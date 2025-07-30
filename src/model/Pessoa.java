@@ -35,6 +35,10 @@ public abstract class Pessoa {
     return nome;
   }
 
+  public Cpf getCpf() {
+    return cpf;
+  }
+
   public CarreiraCultural getCarreiraCultural() {
     return carreiraCultural;
   }

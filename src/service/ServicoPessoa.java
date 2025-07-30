@@ -16,7 +16,7 @@ public class ServicoPessoa {
 
   public String cadastrarPessoa(String nome, String cpf, String email, String telefone, String pcd, String raca,
       String renda, String ocupacaoProfissional, String atuacaoCultural, String segmentoCultural,
-      String coletivoCultural, String tipo) {
+      String grupoCultural, String tipo) {
 
     Optional<Cpf> optCpf = Cpf.getInstance(cpf);
     Optional<Email> optEmail = Email.getInstance(email);
@@ -27,7 +27,7 @@ public class ServicoPessoa {
 
     Cpf cpfInstance = optCpf.get();
     Email emailInstance = optEmail.get();
-    CarreiraCultural carreiraCultural = new CarreiraCultural(atuacaoCultural, segmentoCultural, coletivoCultural);
+    CarreiraCultural carreiraCultural = new CarreiraCultural(atuacaoCultural, segmentoCultural, grupoCultural);
 
     if (tipo.equalsIgnoreCase("conselheiro")) {
       p = new Conselheiro(nome, cpfInstance, emailInstance, telefone, pcd, raca, renda, ocupacaoProfissional,
